@@ -12,8 +12,14 @@ const taskInput = document.querySelector('#task');
 loadEventListeners();
 
 function loadEventListeners() {
-  // Add task event
+  // Add Task Event
   form.addEventListener('submit', addTask);
+  // Remove Task Event
+  taskList.addEventListener('click', removeTask);
+  // Clear Task Event
+  clearBtn.addEventListener('click', clearTasks);
+  // Filter tasks event
+  filter.addEventListener('keyup', filterTask)
 }
 
 // Add Task
@@ -47,4 +53,40 @@ function addTask(e) {
 
 
   e.preventDefault()
+}
+
+function removeTask(e) {
+  if(e.target.parentElement.classList.contains('delete-item')) {
+    if(confirm('Are You Sure?')) {
+      e.target.parentElement.parentElement.remove();
+    }
+  }
+}
+
+// Clear Tasks
+function clearTasks() {
+  // Ways to achieve this functionality
+
+  // 1. taskList = '';
+
+  // 2. This is Faster
+  while(taskList.firstChild) {
+    taskList.removeChild(taskList.firstChild)
+  }
+}
+
+// Filter Task
+function filterTask(e) {
+  // This will give us what the user is typing in the form
+  const text = e.target.value.toLowerCase();
+
+  // .querySelectorAll return a NodeList
+  document.querySelectorAll('.collection-item').forEach(function(task) {
+    const item = task.firstChild.textContent;
+    if(item.toLowerCase().indexOf(text) != -1){
+      task.style.display = 'block'
+    } else {
+      task.style.display = 'none';
+    }
+  })
 }
